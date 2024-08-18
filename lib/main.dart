@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gridview/signInPage.dart';
 import 'package:gridview/mainPage.dart';
+import 'package:gridview/welcome.dart';
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const MyApp());
+  check = db.read('isLogin');
 }
+
+bool check = false;
+final db = GetStorage();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,6 +23,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       builder: (_, child) => MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           // This is the theme of your application.
           //
@@ -35,7 +43,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: mainPage(),
+        home: check ? Welcome() : mainPage(),
       ),
       splitScreenMode: false,
       minTextAdapt: false,

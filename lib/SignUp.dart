@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gridview/signInPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +9,8 @@ class SignUp extends StatefulWidget {
   @override
   State<SignUp> createState() => _SignUpState();
 }
+
+final db = GetStorage();
 
 class _SignUpState extends State<SignUp> {
   @override
@@ -94,7 +97,7 @@ class _SignUpState extends State<SignUp> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               // labelText: 'Full Name',
-                              hintText: 'Zabi ullah',
+                              hintText: 'AbdulSamad',
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -197,16 +200,26 @@ class _SignUpState extends State<SignUp> {
                     ),
                     InkWell(
                       onTap: () async {
-                        final pref = await SharedPreferences.getInstance();
-                        await pref.setString('name', name.text.toString());
-                        await pref.setString('gmail', email.text.toString());
-                        await pref.setString('pass', password.text.toString());
-                        await pref.setString(
-                            'Cpass', Cpassword.text.toString());
+                        // final pref = await SharedPreferences.getInstance();
+                        // await pref.setString('name', name.text.toString());
+                        // await pref.setString('gmail', email.text.toString());
+                        // await pref.setString('pass', password.text.toString());
+                        // await pref.setString(
+                        //     'Cpass', Cpassword.text.toString());
+                        // name.clear();
+                        // email.clear();
+                        // password.clear();
+                        // Cpassword.clear();
+                        db.write('email', email.text);
+                        db.write('pass', password.text);
+                        db.write('name', name.text);
+                        db.write('Cpass', Cpassword.text);
                         name.clear();
                         email.clear();
                         password.clear();
                         Cpassword.clear();
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => SignIn()));
                       },
                       child: Container(
                         width: 360,

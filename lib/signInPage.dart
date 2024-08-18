@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gridview/SignUp.dart';
 import 'package:gridview/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,8 @@ class SignIn extends StatefulWidget {
   @override
   State<SignIn> createState() => _SignInState();
 }
+
+final db = GetStorage();
 
 class _SignInState extends State<SignIn> {
   @override
@@ -166,23 +169,32 @@ class _SignInState extends State<SignIn> {
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: InkWell(
                         onTap: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          String mail =
-                              prefs.getString('gmail') ?? 'email not found';
-                          String pass =
-                              prefs.getString('pass') ?? ' pass not found';
-                          print(mail);
-                          print(pass);
-                          if (mail == email.text.toString() &&
-                              pass == password.text.toString()) {
+                          // final prefs = await SharedPreferences.getInstance();
+                          // String mail =
+                          //     prefs.getString('gmail') ?? 'email not found';
+                          // String pass =
+                          //     prefs.getString('pass') ?? ' pass not found';
+                          // print(mail);
+                          // print(pass);
+                          // if (mail == email.text.toString() &&
+                          //     pass == password.text.toString()) {
+                          //   Navigator.pushReplacement(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => Welcome()));
+                          //   email.clear();
+                          //   password.clear();
+                          // } else {
+                          //   print('wrong data');
+                          // }
+                          String mail = db.read('email');
+                          String pass = db.read('pass');
+                          if (email.text == mail && password.text == pass) {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Welcome()));
-                            email.clear();
-                            password.clear();
-                          } else {
-                            print('wrong data');
+                            db.write('isLogin', true);
                           }
                         },
                         child: Container(
